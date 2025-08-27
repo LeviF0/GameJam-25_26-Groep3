@@ -2,47 +2,55 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class ReactionGame : MonoBehaviour
+public class ExPopupScript : MonoBehaviour
 {
-    public Image targetImage;           // The UI Image component to display sprites
-    public Sprite[] sprites;            // 5 sprites (good + bad)
-    public int badSpriteIndex = 0;      // Which one is the "bad" sprite (set in Inspector)
-    public KeyCode reactionKey = KeyCode.Space;
-    public float maxReactionTime = 2f;
+    public Image targetImage;
+    public Image netflixImage;
+    public Button reactionButton;
+    public Button resumeButton;
+    public Sprite[] sprites;
+    public AudioSource sfxSource;
+    public AudioClip imageSfx;
 
-    private bool isImageActive = false;
+    private int badSpriteIndex = 0;
+    private float maxReactionTime = 2f;
+    private bool isPopupActive = false;
     private bool isBadImage = false;
     private float reactionTimer = 0f;
+    private bool isPaused = true;
 
     void Start()
     {
         targetImage.gameObject.SetActive(false);
+        netflixImage.gameObject.SetActive(false);
+        reactionButton.gameObject.SetActive(false);
+        resumeButton.gameObject.SetActive(true);
+
+        reactionButton.onClick.AddListener(OnButtonPressed);
+        resumeButton.onClick.AddListener(ResumeGame);
+
         StartCoroutine(GameLoop());
     }
 
     void Update()
     {
-        if (isImageActive)
+        if (isPaused) return;
+
+        if (isPopupActive)
         {
             reactionTimer -= Time.deltaTime;
 
-            if (Input.GetKeyDown(reactionKey))
+            if (reactionTimer <= 0f)
             {
                 if (isBadImage)
                 {
-                    Success();
+                    Fail("Did not press the bad image in time");
                 }
                 else
                 {
-                    Fail("Pressed on a good image!");
+                    
+                    ClearPopup();
                 }
-            }
-            else if (reactionTimer <= 0f)
-            {
-                if (isBadImage)
-                    Fail("Did not press on the bad image!");
-                else
-                    Success(); // Correctly ignored a good image
             }
         }
     }
@@ -51,37 +59,82 @@ public class ReactionGame : MonoBehaviour
     {
         while (true)
         {
-            // Wait a random time before showing an image
-            float waitTime = Random.Range(1f, 3f);
+            if (isPaused)
+            {
+                yield return null;
+                continue;
+            }
+
+            float waitTime = Random.Range(1f, 5f);
             yield return new WaitForSeconds(waitTime);
 
-            // Pick a random sprite
+            if (isPaused) continue;
+
             int index = Random.Range(0, sprites.Length);
             targetImage.sprite = sprites[index];
             isBadImage = (index == badSpriteIndex);
 
-            // Show image
             targetImage.gameObject.SetActive(true);
-            isImageActive = true;
+            isPopupActive = true;
             reactionTimer = maxReactionTime;
 
-            // Wait until Success() or Fail() ends this round
-            while (isImageActive)
+            if (sfxSource != null && imageSfx != null)
+                sfxSource.PlayOneShot(imageSfx);
+
+            while (isPopupActive && !isPaused)
                 yield return null;
         }
     }
 
+    void OnButtonPressed()
+    {
+        if (!isPopupActive) return;
+
+        if (isBadImage)
+        {
+            Success();
+        }
+        else
+        {
+            Fail("Pressed on a good image!");
+        }
+
+        reactionButton.gameObject.SetActive(false);
+    }
+
     void Success()
     {
-        Debug.Log("Success!");
-        targetImage.gameObject.SetActive(false);
-        isImageActive = false;
+        ClearPopup();
+        ClearScreen();
+        isPaused = true;
     }
 
     void Fail(string reason)
     {
         Debug.Log("Fail: " + reason);
+        ClearPopup();
+        ClearScreen();
+        isPaused = true;
+    }
+
+    void ClearScreen()
+    {
+        netflixImage.gameObject.SetActive(false);
+        resumeButton.gameObject.SetActive(true);
+        reactionButton.gameObject.SetActive(false);
+    }
+
+    void ClearPopup()
+    {
         targetImage.gameObject.SetActive(false);
-        isImageActive = false;
+        isPopupActive = false;
+    }
+
+    void ResumeGame()
+    {
+        reactionButton.gameObject.SetActive(true);
+        netflixImage.gameObject.SetActive(true);
+        resumeButton.gameObject.SetActive(false);
+        isPaused = false;
     }
 }
