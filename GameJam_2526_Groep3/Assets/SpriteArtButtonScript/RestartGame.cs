@@ -5,7 +5,12 @@ public class RestartGame : MonoBehaviour
 {
    public void ResetGame()
     {
-        //Reload game scene...
-        //SceneManager.LoadScene();
+        Debug.Log("LeviScene");
+        SceneManager.LoadScene("LeviScene");
+    }
+    public void ExitGame()
+    {
+        Debug.Log("Quit");
+        Application.Quit();
     }
 }
