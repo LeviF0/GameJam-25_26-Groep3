@@ -379,7 +379,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -728, y: 0}
+  m_AnchoredPosition: {x: 663, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &133527482
@@ -1063,6 +1063,7 @@ GameObject:
   - component: {fileID: 1241588724}
   - component: {fileID: 1241588725}
   - component: {fileID: 1241588726}
+  - component: {fileID: 1241588727}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1123,6 +1124,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xButton: {fileID: 2123954920330764572}
+--- !u!114 &1241588727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241588723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6f028df86974345b4ebf092cc7af3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1262888308
 GameObject:
   m_ObjectHideFlags: 0
@@ -1184,7 +1197,7 @@ Transform:
   m_GameObject: {fileID: 1269047938}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -411.771, y: -150, z: -4.203171}
+  m_LocalPosition: {x: -417, y: -150, z: -4.203171}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2143,6 +2156,7 @@ MonoBehaviour:
   Dopamine: {fileID: 2638490564554835599}
   fillRate: 0.02
   drainRate: 0.02
+  sceneLoader: {fileID: 1241588727}
 --- !u!1 &3117621951863549409
 GameObject:
   m_ObjectHideFlags: 0
@@ -2289,6 +2303,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 2115687409}
   - {fileID: 1241588724}
-  - {fileID: 1338232725}
   - {fileID: 290732902241234999}
+  - {fileID: 1338232725}
   - {fileID: 642064716}

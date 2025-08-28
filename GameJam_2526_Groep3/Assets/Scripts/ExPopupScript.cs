@@ -53,6 +53,7 @@ public class ExPopupScript : MonoBehaviour
             if (isBadImage)
             {
                 Fail("Did not press the bad image in time");
+                dopamineFillScript.sceneLoader.LoadLosingScene();
             }
             else
             {

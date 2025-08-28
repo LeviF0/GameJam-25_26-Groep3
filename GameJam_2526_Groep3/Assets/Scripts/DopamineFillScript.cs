@@ -6,10 +6,13 @@ public class DopamineFillScript : MonoBehaviour
     public Image Dopamine;
     public float fillRate = 0.02f;  // Fill speed per second
     public float drainRate = 0.02f; // Drain speed per second
+    public SceneLoader sceneLoader;  
 
     private float fillAmount = 0f;
     private bool isFilling = false;
     private bool isDraining = false;
+    private bool reachedTwentyPercent = false;
+    private bool hasLost = false;
 
     void Start()
     {
@@ -26,9 +29,28 @@ public class DopamineFillScript : MonoBehaviour
         {
             fillAmount -= drainRate * Time.deltaTime;
         }
-
         fillAmount = Mathf.Clamp01(fillAmount);
         Dopamine.fillAmount = fillAmount;
+
+        // Track if we've ever reached 20%
+        if (!reachedTwentyPercent && fillAmount >= 0.2f)
+        {
+            reachedTwentyPercent = true;
+            Debug.Log("Reached 20% fill amount.");
+        }
+
+        // If we've reached 20% once and now the bar is empty, trigger losing scene
+        if (reachedTwentyPercent && fillAmount <= 0f && !hasLost)
+        {
+            Debug.Log("Fill amount dropped to 0% after reaching 20%. Triggering losing scene.");
+            hasLost = true;
+            sceneLoader.LoadLosingScene();
+        }
+
+        if(Dopamine.fillAmount == 1f)
+        {
+            sceneLoader.LoadWinScene();
+        }
     }
 
     // Call to start filling

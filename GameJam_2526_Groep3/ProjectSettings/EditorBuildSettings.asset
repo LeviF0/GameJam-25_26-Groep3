@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/idk.unity
     guid: 0dd6c70307ea9f849a680df16e27db26
+  - enabled: 1
+    path: Assets/Scenes/LeviScene.unity
+    guid: 67a5e62ca004713448f355c212032f3e
+  - enabled: 1
+    path: Assets/Scenes/LosingScene.unity
+    guid: 0ce515472dab92c4ab9bb9b95df13f5d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
