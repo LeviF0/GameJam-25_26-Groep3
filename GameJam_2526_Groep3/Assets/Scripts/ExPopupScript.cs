@@ -10,7 +10,9 @@ public class ExPopupScript : MonoBehaviour
     public Sprite[] sprites;
     public AudioSource sfxSource;
     public AudioClip imageSfx;
+
     public RandomExitButton randomExitButton;
+    public DopamineFillScript dopamineFillScript; // Assign in Inspector
 
     private int badSpriteIndex = 0;
     private float maxReactionTime = 2f;
@@ -34,15 +36,28 @@ public class ExPopupScript : MonoBehaviour
 
     void Update()
     {
+        // Only control fill/drain state here, not the actual progress
+        if (dopamineFillScript != null)
+        {
+            if (netflixImage.gameObject.activeSelf)
+                dopamineFillScript.StartFilling();
+            else
+                dopamineFillScript.StartDraining();
+        }
+
         if (isPaused || !isPopupActive) return;
 
         reactionTimer -= Time.deltaTime;
         if (reactionTimer <= 0f)
         {
             if (isBadImage)
+            {
                 Fail("Did not press the bad image in time");
+            }
             else
+            {
                 ClearPopup();
+            }
         }
     }
 
@@ -70,7 +85,6 @@ public class ExPopupScript : MonoBehaviour
             if (sfxSource && imageSfx)
                 sfxSource.PlayOneShot(imageSfx);
 
-            // Show X button
             randomExitButton?.ShowAtRandomLocation();
 
             while (isPopupActive && !isPaused)
@@ -83,9 +97,13 @@ public class ExPopupScript : MonoBehaviour
         if (!isPopupActive) return;
 
         if (isBadImage)
+        {
             Success();
+        }
         else
+        {
             Fail("Pressed on a good image!");
+        }
     }
 
     void Success()
@@ -98,6 +116,7 @@ public class ExPopupScript : MonoBehaviour
     void Fail(string reason)
     {
         Debug.Log("Fail: " + reason);
+        dopamineFillScript?.DecreaseBar(0.1f); // Lose 10%
         ClearPopup();
         ClearScreen();
         isPaused = true;

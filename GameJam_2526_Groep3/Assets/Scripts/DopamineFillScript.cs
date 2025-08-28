@@ -4,41 +4,59 @@ using UnityEngine.UI;
 public class DopamineFillScript : MonoBehaviour
 {
     public Image Dopamine;
-    public float fillDuration = 10f;
+    public float fillRate = 0.02f;  // Fill speed per second
+    public float drainRate = 0.02f; // Drain speed per second
 
-    public Button toggleButton;
-
-    private float fillTimer = 0f;
+    private float fillAmount = 0f;
     private bool isFilling = false;
+    private bool isDraining = false;
 
     void Start()
     {
         Dopamine.fillAmount = 0f;
-        toggleButton.onClick.AddListener(ToggleFilling);
     }
 
     void Update()
     {
         if (isFilling)
         {
-            if (fillTimer < fillDuration)
-            {
-                fillTimer += Time.deltaTime / 2f;
-                Dopamine.fillAmount = (fillTimer / fillDuration);
-            }
+            fillAmount += fillRate * Time.deltaTime;
         }
-        else
+        else if (isDraining)
         {
-            if (fillTimer > 0f)
-            {
-                fillTimer -= Time.deltaTime / 4f;
-                Dopamine.fillAmount = (fillTimer / fillDuration);
-            }
+            fillAmount -= drainRate * Time.deltaTime;
         }
+
+        fillAmount = Mathf.Clamp01(fillAmount);
+        Dopamine.fillAmount = fillAmount;
     }
 
-    public void ToggleFilling()
+    // Call to start filling
+    public void StartFilling()
     {
-        isFilling = !isFilling;
+        isFilling = true;
+        isDraining = false;
+    }
+
+    // Call to start draining
+    public void StartDraining()
+    {
+        isFilling = false;
+        isDraining = true;
+    }
+
+    // Call to stop both filling and draining
+    public void StopProgress()
+    {
+        isFilling = false;
+        isDraining = false;
+    }
+
+    // Call this to decrease the bar by a percentage (0.1 = 10%)
+    public void DecreaseBar(float percent)
+    {
+        fillAmount -= percent;
+        fillAmount = Mathf.Clamp01(fillAmount);
+        Dopamine.fillAmount = fillAmount;
     }
 }
