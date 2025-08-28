@@ -20,7 +20,10 @@ public class FilmChoice : MonoBehaviour
     }
     void OnMouseExit()
     {
-        animator.SetBool("onAim", false);
+        if (!isSelected)
+        {
+            animator.SetBool("onAim", false);
+        }
     }
     private void OnMouseDown()
     {
