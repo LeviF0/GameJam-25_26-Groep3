@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DopamineFillScript : MonoBehaviour
@@ -34,6 +35,10 @@ public class DopamineFillScript : MonoBehaviour
                 fillTimer -= Time.deltaTime / 4f;
                 Dopamine.fillAmount = (fillTimer / fillDuration);
             }
+        }
+        if (Dopamine.fillAmount >= 1f)
+        {
+            SceneManager.LoadScene("WinningScene");
         }
     }
 
