@@ -4,8 +4,8 @@ using UnityEngine.UI;
 public class DopamineFillScript : MonoBehaviour
 {
     public Image Dopamine;
-    public float fillRate = 0.02f;  // Fill speed per second
-    public float drainRate = 0.02f; // Drain speed per second
+    public float fillRate = 0.015f;  // Fill speed per second
+    public float drainRate = 0.08f; // Drain speed per second
     public SceneLoader sceneLoader;  
 
     private float fillAmount = 0f;
