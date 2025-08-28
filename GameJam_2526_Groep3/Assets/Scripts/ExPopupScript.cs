@@ -12,7 +12,7 @@ public class ExPopupScript : MonoBehaviour
     public AudioClip imageSfx;
 
     public RandomExitButton randomExitButton;
-    public DopamineFillScript dopamineFillScript; // Assign in Inspector
+    public DopamineFillScript dopamineFillScript;
 
     private int badSpriteIndex = 0;
     private float maxReactionTime = 2f;
